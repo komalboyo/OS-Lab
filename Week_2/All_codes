@@ -1,0 +1,76 @@
+echo $HOME, $PATH
+echo $MAIL
+echo $USER, $SHELL, $TERM
+
+
+firstname=Rakesh
+lastname=Sharma
+echo $firstname $lastname
+export lastname
+
+sh
+echo $firstname $lastname
+
+
+echo the name of the script is $0
+echo the first argument is $1
+echo a list of all the arguments is $*
+echo this script places the date into a temporary file echo called $1.$$ 
+date > $1.$$
+ls $1.$$
+
+chmod +x script.sh
+./script.sh Rahul Sachin Kumble
+
+
+cat > script3.sh
+(sleep 10; echo done 1 ) &
+(sleep 10; echo done 2 ) &
+echo done 3; wait ; echo done 4
+chmod +x script3.sh
+
+
+(nohup sort -o e.txt  emp.lst; echo done) &
+
+
+#### LAB EXERCISES
+1.
+cat > q1.sh
+ls *.[a-z] 
+chmod +x q1.sh
+$ ./q1.sh
+
+2.
+cat > q2.sh
+ls $1 $2
+chmod +x q2.sh
+$ ./q2.sh test2 *.?
+
+3.
+cat > q3.sh
+echo number of users
+who | wc -l
+chmod +x q3.sh
+./q3.sh
+
+4.
+cat > q4.sh
+echo The number of files:
+ls -l | grep "^-" | wc -l
+
+5.
+cat > q5.sh
+cat $1 $2 > combined.txt
+sort -u combined.txt
+
+6.
+
+
+
+
+
+
+
+
+
+
