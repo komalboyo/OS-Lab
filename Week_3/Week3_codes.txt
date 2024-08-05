@@ -1,1 +1,81 @@
 ****LAB EXERCISES****
+
+declare -a teamnames
+tn[0]=Komal;tn[1]=Shivani;tn[2]=Akash
+echo There are ${#tn[*]} teams
+	There are 3 teams
+echo There are ${tn[*]} teams
+	There are Komal Shivani Akash teams
+
+alias [word[=string]]
+unalias -a {word}+
+alias dir="ls -aF"
+dir
+	./  ../  Week3_codes.txt
+	
+**word is the new name you want to assign to the command.
+string is the actual command or sequence of commands that the alias will represent.
+unalias is used to remove an existing alias.
+-a option with Unalias removes all aliases.
+{word}+ specifies one or more aliases to be removed**
+
+**
+    Using backticks (`) for command substitution is considered outdated. It's recommended to use the $() syntax instead, which is more readable and can be nested easily.
+    Example: Instead of x=\expr $x + 1`, use x=$(expr $x + 1)`.
+**
+
+echo `expr \( 4 \> 5 \)`  --must have spaces between
+	0
+
+echo `expr substr “donkey” 4 3` --indexing starts from 1, 4- starting index, 3- length of substring
+
+
+echo "enter a number:"
+read number 
+
+if [ $number -lt 0 ]; then 
+    echo "negative" 
+elif [ $number -eq 0 ]; then 
+    echo "zero" 
+else 
+    echo "positive" 
+fi
+
+
+case $1 in [AaBbCc])
+option=0;; 
+*)
+option=1;;
+esac
+
+echo $option
+
+**#!/bin/bash --shebang ensures that the script is executed with the correct interpreter, enhancing portability and usability. **
+
+## must be spacing in the [ condition ] for while and until
+
+## Differences Between (( ... )) and [ ... ]
+
+Inside (( ... )), you can use standard arithmetic operators like +, -, *, /, and %, as well as comparison operators like ==, !=, <, >, <=, and >=.
+    Example:
+
+    bash
+    if (( n % 2 == 0 )); then
+        echo "$n is Even"
+    fi
+
+    No Need for [ or ]:
+        When using (( ... )), the entire expression is evaluated as an arithmetic expression, and the result is treated as a boolean condition. If the result is non-zero, it is considered true; if it is zero, it is considered false.
+        Thus, there is no need for square brackets, which are used for test conditions in [ ... ].
+    Comparison Operators:
+        Within (( ... )), you can use == for equality checks rather than -eq, which is used in the [ ... ] test construct. This makes the syntax cleaner and more intuitive for arithmetic comparisons.
+
+Using Square Brackets
+On the other hand, square brackets [...] are used for conditional expressions that evaluate to true or false. This is often used for string comparisons, file tests, and simple numerical comparisons.
+
+## to declare variables, no space
+
+
+
+
+
