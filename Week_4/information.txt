@@ -1,0 +1,17 @@
+    #include <unistd.h>: Includes the header file for POSIX operating system API, providing declarations for functions like write(), read(), and close().
+    
+    #include <fcntl.h>: Includes the header file for file control options, providing declarations for functions like open().
+    
+    #include <stdlib.h>: Includes the header file for standard library functions, providing declarations for functions like exit().
+
+The snprintf function itself does not print anything. Instead, it formats a string and stores it in a buffer.
+
+// Format and store the string in buffer
+int len = sprintf(buffer, "Name: %s, Age: %d, Height: %.1f", name, age, height);
+// Print the formatted string
+printf("%s\n", buffer);\
+
+** may take 1 parameter using standard input using read(0,,)
+cc q1.c  (since we havent named the file, we call it by ./a.out)
+echo <word> | ./a.out
+
