@@ -1,6 +1,0 @@
-    #include <unistd.h>: Includes the header file for POSIX operating system API, providing declarations for functions like write(), read(), and close().
-    
-    #include <fcntl.h>: Includes the header file for file control options, providing declarations for functions like open().
-    
-    #include <stdlib.h>: Includes the header file for standard library functions, providing declarations for functions like exit().
-
