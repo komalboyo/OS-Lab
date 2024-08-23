@@ -1,0 +1,2 @@
+pid_t getpid(void); // this function returns the process identifier (PID)
+pid_t getppid(void); // this function returns the parent process identifier (PPID)
