@@ -6,66 +6,60 @@
 #include <limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+
 #define FIFO_NAME "/tmp/q3Fifo"
 
-int main()
-{
-  if (access(FIFO_NAME, F_OK) == -1) 
-  {
-	int res = mkfifo(FIFO_NAME, 0777);
-	if (res != 0) 
-	{
-	    fprintf(stderr, "Could not create fifo %s\n", FIFO_NAME);
-	    exit(EXIT_FAILURE);
-	}
-  }
-		
-  int c_pid=fork();
-  
-  if(c_pid<0)
-  {
-    perror("Child Could not be created");
-    exit(-1);
-  }
-  
-  else if(c_pid==0)
-  {
-    char buffer[256];
-    while(buffer[0]!='x')
-    {
-	    int pipe = open(FIFO_NAME,O_WRONLY);
-	    printf("Child: ");
-	    scanf("%[^\n]s",buffer);
-	    if(buffer[0]=='x')
-	      exit(0);
-	    write(pipe,buffer,sizeof(buffer));
-	    close(pipe);
-	    pipe = open(FIFO_NAME,O_RDONLY);
-	    read(pipe,buffer,sizeof(buffer));
-	    printf("Parent says: %s\n",buffer);
-	    close(pipe);
+int main() {
+    if (access(FIFO_NAME, F_OK) == -1) {
+        int res = mkfifo(FIFO_NAME, 0777);
+        if (res != 0) {
+            fprintf(stderr, "Could not create fifo %s\n", FIFO_NAME);
+            exit(EXIT_FAILURE);
+        }
     }
-    exit(0);
-  }
-  
-  else
-  {
-    char buffer[256];
-    while(buffer[0]!='x')
-    {
-            int pipe = open(FIFO_NAME,O_RDONLY);
-	    read(pipe,buffer,sizeof(buffer));
-	    if(buffer[0]=='x')
-	      exit(0);
-	    printf("Child says: %s\n",buffer);
-	    close(pipe);
-	    pipe = open(FIFO_NAME,O_WRONLY);
-	    printf("Parent: ");
-	    scanf("%[^\n]s",buffer);
-	    write(pipe,buffer,sizeof(buffer));
-	    close(pipe);
-	    
+
+    int c_pid = fork();
+
+    if (c_pid < 0) {
+        perror("Child Could not be created");
+        exit(-1);
     }
-    exit(0);
-   }
+
+    if (c_pid == 0) {  // Child process
+        char buffer[256];
+        while (1) {
+            int pipe = open(FIFO_NAME, O_WRONLY);
+            printf("Child: ");
+            fgets(buffer, sizeof(buffer), stdin);  // Use fgets() to read input
+            buffer[strcspn(buffer, "\n")] = '\0';  // Remove trailing newline character
+            if (strcmp(buffer, "x") == 0)
+                break;
+            write(pipe, buffer, strlen(buffer) + 1);  // Write the null-terminated string
+            close(pipe);
+
+            pipe = open(FIFO_NAME, O_RDONLY);
+            read(pipe, buffer, sizeof(buffer));
+            printf("Parent says: %s\n", buffer);
+            close(pipe);
+        }
+        exit(0);
+    } else {  // Parent process
+        char buffer[256];
+        while (1) {
+            int pipe = open(FIFO_NAME, O_RDONLY);
+            read(pipe, buffer, sizeof(buffer));
+            if (strcmp(buffer, "x") == 0)
+                break;
+            printf("Child says: %s\n", buffer);
+            close(pipe);
+
+            pipe = open(FIFO_NAME, O_WRONLY);
+            printf("Parent: ");
+            fgets(buffer, sizeof(buffer), stdin);  // Use fgets() to read input
+            buffer[strcspn(buffer, "\n")] = '\0';  // Remove trailing newline character
+            write(pipe, buffer, strlen(buffer) + 1);  // Write the null-terminated string
+            close(pipe);
+        }
+        exit(0);
+    }
 }
