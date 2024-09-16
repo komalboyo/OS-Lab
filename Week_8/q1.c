@@ -54,3 +54,47 @@ int main()
 	pthread_join(tid1,NULL);
 	pthread_join(tid2,NULL);
 }
+
+/*OUTPUT
+In producer::produced item is 0
+In producer::produced item is 1
+In producer::produced item is 2
+In producer::produced item is 3
+In producer::produced item is 4
+In producer::produced item is 5
+In producer::produced item is 6
+In producer::produced item is 7
+In consumer::WHAT consumed item is 0
+In consumer::WHAT consumed item is 1
+In consumer::WHAT consumed item is 2
+In consumer::WHAT consumed item is 3
+In consumer::WHAT consumed item is 4
+In consumer::WHAT consumed item is 5
+In consumer::WHAT consumed item is 6
+In consumer::WHAT consumed item is 7
+In consumer::In producer::produced item is 8
+In producer::produced item is 9
+In producer::produced item is 10
+In producer::produced item is 11
+In producer::produced item is 12
+In producer::produced item is 13
+In producer::produced item is 14
+In producer::produced item is 15
+WHAT consumed item is 8
+In consumer::WHAT consumed item is 9
+In producer::In consumer::produced item is 16
+In producer::produced item is 17
+In producer::produced item is 18
+In producer::produced item is 19
+WHAT consumed item is 10
+In consumer::WHAT consumed item is 11
+In consumer::WHAT consumed item is 12
+In consumer::WHAT consumed item is 13
+In consumer::WHAT consumed item is 14
+In consumer::WHAT consumed item is 15
+In consumer::WHAT consumed item is 16
+In consumer::WHAT consumed item is 17
+In consumer::WHAT consumed item is 18
+In consumer::WHAT consumed item is 19
+
+*/
