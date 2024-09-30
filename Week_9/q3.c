@@ -3,31 +3,50 @@ to the given ending number.*/
 
 #include <pthread.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
-int n, pr[100];
+bool is_prime(int n) {
+    if (n <= 1) return false;
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+void* prime(void* param) {
 
-void* child_thread(void* param) {
-    int x = (long)param;
-    for (int i = 2; i < x; i++)
-        if (x % i == 0) return 0;
-    pr[n++] = x;
-    return 0;
+    int * nums = (int*)param;
+    int approx = nums[1] - nums [0] + 1;
+    int* result = malloc(approx*sizeof(int));  // Allocate memory for the result
+    int i=nums[0];
+    int j=1;
+    while(i<=nums[1])
+    {
+      if(is_prime(i))
+      	{
+      	  result[j]=i;
+      	  j++;
+      	}
+      i++;
+    }
+    result[0]=j; //number of elements in result including 0
+    pthread_exit((void*)result); 
 }
 
 int main() {
-    pthread_t thread[100];
-    int l, u;
-    printf("Enter lower limit: ");
-    scanf("%d", &l);
-    printf("Enter upper limit: ");
-    scanf("%d", &u);
+    pthread_t thread;
+    printf("Enter start and end (format: start end): ");
+    int nums[2];
+    scanf("%d %d",&nums[0],&nums[1]);
+    int * result;
 
-    for (int i = l; i <= u; i++) {
-        pthread_create(&thread[i - l], 0, child_thread, (void*)(long)i);
-        pthread_join(thread[i - l], 0);
-    }
+    pthread_create(&thread, NULL, prime, (void*)&nums);
 
-    printf("Prime Numbers in the range:\n");
-    for (int i = 0; i < n; i++)
-        printf("%d ", pr[i]);
+    pthread_join(thread, (void**)&result);
+    for(int i=1;i<result[0];i++)
+      printf("%d ",result[i]);
+    printf("\n");
+    return 0;
 }
