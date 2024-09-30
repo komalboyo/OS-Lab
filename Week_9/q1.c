@@ -11,22 +11,38 @@ this will require having the parent thread wait for the child thread to finish.*
 #include <stdio.h>
 #include <stdlib.h>
 
-int fib[100];
-void* child_thread(void* param) {
-    int id = (long)param;
-    fib[id] = (id < 2) ? id : fib[id - 1] + fib[id - 2];
-    return 0;
+int fibseries[100];
+
+void* fib(void* param) {
+    int n = *(int*)param;  // Dereference the pointer to get the integer value
+    printf("Child thread received: %d\n", n);
+    
+    fibseries[0]=0;
+    fibseries[1]=1;
+ 
+    int a = 0, b = 1, temp;
+    for (int i = 2; i <= n; i++) 
+        fibseries[i] = fibseries[i-1] + fibseries[i-2];
+    
 }
 
-int main() {
-    printf("Enter the value of n: ");
-    int n;
-    scanf("%d", &n);
-    pthread_t thread[100];
-    for (int i = 0; i < n; i++)
-        pthread_create(&thread[i], 0, child_thread, (void*)(long)i);
-    for (int i = 0; i < n; i++)
-        pthread_join(thread[i], 0);
-    for (int i = 0; i < n; i++)
-        printf("%d\n", fib[i]);
+int main(int argc,char * argv[]) {
+
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <n>\n", argv[0]);
+        return 1;
+    }
+
+    pthread_t thread;
+    int n = atoi(argv[1]);
+    pthread_create(&thread, NULL, fib, (void*)&n);
+   
+    pthread_join(thread,NULL);
+   
+    printf("Result from child thread: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ",fibseries[i]);
+    }
+    printf("\n");
+    return 0;
 }
